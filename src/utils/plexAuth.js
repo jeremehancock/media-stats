@@ -50,7 +50,7 @@ export async function checkPlexAuth(pinId, clientId) {
       let bestConnection;
 
       // Try to find a local connection first
-      bestConnection = server.connections.find((conn) => conn.remote);
+      bestConnection = server.connections.find((conn) => !conn.local);
 
       // If no local connection, try to find a direct remote connection
       if (!bestConnection) {
