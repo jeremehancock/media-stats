@@ -77,7 +77,7 @@ export const NowWatching: React.FC<NowWatchingProps> = ({
       <Grid container spacing={2}>
         {sessions.map((session) => (
           <Grid item xs={12} md={6} key={session.id}>
-            <Paper variant="outlined" sx={{ p: 2 }}>
+            <Paper variant="outlined" sx={{ p: 2, pb: 0.8 }}>
               <Box
                 display="flex"
                 gap={2}
