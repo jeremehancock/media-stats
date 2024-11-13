@@ -15,7 +15,7 @@ import {
   Paper,
 } from '@mui/material';
 import { Brightness4, Brightness7 } from '@mui/icons-material';
-import { getClientId, resetClientId } from '@/utils/clientId';
+import { getClientId } from '@/utils/clientId';
 import { NowWatching } from '@/components/NowWatching';
 import { StatsCard } from '@/components/StatsCard';
 import { ServerSelectDialog } from '@/components/ServerSelectDialog';
