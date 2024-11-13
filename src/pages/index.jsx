@@ -47,6 +47,9 @@ export default function Home() {
 
   const { stats, isLoading: statsLoading, error: statsError } = usePlexStats();
 
+  const { mutate: mutateSessions } = usePlexSessions();
+  const { mutate: mutateStats } = usePlexStats();
+
   // Set client-side flag
   useEffect(() => {
     setIsClient(true);
@@ -230,10 +233,17 @@ export default function Home() {
       setIsAuthenticating(false);
     }
   };
-
   const handleLogout = () => {
-    if (isClient) {
-      localStorage.removeItem(storageKeys.PLEX_DATA);
+    if (typeof window !== 'undefined') {
+      // Clear all Plex-related data
+      localStorage.removeItem('plexData');
+      localStorage.removeItem('plexClientId');
+      
+      // Clear SWR cache using the mutate functions
+      if (mutateSessions) mutateSessions([], false);
+      if (mutateStats) mutateStats(null, false);
+      
+      // Reload the page
       window.location.reload();
     }
   };
