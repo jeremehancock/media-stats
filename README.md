@@ -21,8 +21,8 @@ services:
 
     container_name: /media-stats
     restart: unless-stopped
-
-docker-compose pull
-
-docker-compose up -d
 ```
+
+`docker-compose pull`
+
+`docker-compose up -d`
