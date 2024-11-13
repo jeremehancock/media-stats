@@ -14,7 +14,7 @@ export default async function handler(req, res) {
     const response = await axios.post('https://plex.tv/api/v2/pins', null, {
       params: {
         'X-Plex-Client-Identifier': clientId,
-        'X-Plex-Product': 'Plex Stats',
+        'X-Plex-Product': 'Media Stats',
         'X-Plex-Version': '1.0',
         strong: true,
       },

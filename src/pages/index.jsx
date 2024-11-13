@@ -15,7 +15,7 @@ import {
   Paper,
 } from '@mui/material';
 import { Brightness4, Brightness7 } from '@mui/icons-material';
-import { getClientId } from '@/utils/clientId';
+import { getClientId, resetClientId } from '@/utils/clientId';
 import { NowWatching } from '@/components/NowWatching';
 import { StatsCard } from '@/components/StatsCard';
 import { ServerSelectDialog } from '@/components/ServerSelectDialog';
@@ -160,7 +160,20 @@ export default function Home() {
       }
 
       const { pinId, code } = await response.json();
-      const authUrl = `https://app.plex.tv/auth#?clientID=${clientId}&code=${code}&context[device][product]=Plex%20Stats`;
+
+      // Construct auth URL with all required parameters
+      const authQueryParams = new URLSearchParams({
+        clientID: clientId,
+        code: code,
+        'context[device][product]': 'Media Stats',
+        'context[device][version]': '1.0',
+        'context[device][platform]': 'Web',
+        'context[device][device]': 'Web',
+        'context[device][deviceName]': 'Media Stats',
+        'context[device][environment]': 'Web',
+      });
+
+      const authUrl = `https://app.plex.tv/auth#?${authQueryParams.toString()}`;
       const authWindow = window.open(
         authUrl,
         'PlexAuth',
@@ -210,7 +223,9 @@ export default function Home() {
     } catch (error) {
       console.error('Auth error:', error);
       setAuthError(
-        error.message || 'Failed to authenticate with Plex. Please try again.',
+        error instanceof Error
+          ? error.message
+          : 'Failed to authenticate with Plex. Please try again.',
       );
       setIsAuthenticating(false);
     }
