@@ -1,4 +1,3 @@
-// components/NowWatching.tsx
 import React from 'react';
 import {
   Paper,

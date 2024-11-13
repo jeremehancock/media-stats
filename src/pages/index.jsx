@@ -19,13 +19,19 @@ import { getClientId } from '@/utils/clientId';
 import { NowWatching } from '@/components/NowWatching';
 import { StatsCard } from '@/components/StatsCard';
 import { ServerSelectDialog } from '@/components/ServerSelectDialog';
+import { SystemResources } from '@/components/SystemResources';
+
 import { lightTheme, darkTheme } from '@/lib/theme';
 import {
   getStorageItem,
   setStorageItem,
   storageKeys,
 } from '@/utils/localStorage';
-import { usePlexSessions, usePlexStats } from '@/hooks/usePlex';
+import {
+  usePlexSessions,
+  usePlexStats,
+  usePlexResources,
+} from '@/hooks/usePlex';
 
 export default function Home() {
   const [isClient, setIsClient] = useState(false);
@@ -44,6 +50,12 @@ export default function Home() {
     isLoading: sessionsLoading,
     error: sessionsError,
   } = usePlexSessions();
+
+  const {
+    resources,
+    isLoading: resourcesLoading,
+    error: resourcesError,
+  } = usePlexResources();
 
   const { stats, isLoading: statsLoading, error: statsError } = usePlexStats();
 
@@ -238,11 +250,11 @@ export default function Home() {
       // Clear all Plex-related data
       localStorage.removeItem('plexData');
       localStorage.removeItem('plexClientId');
-      
+
       // Clear SWR cache using the mutate functions
       if (mutateSessions) mutateSessions([], false);
       if (mutateStats) mutateStats(null, false);
-      
+
       // Reload the page
       window.location.reload();
     }
@@ -358,7 +370,6 @@ export default function Home() {
             transition: 'padding-top 0.3s ease-in-out',
             pt: isAppBarVisible ? 8 : 2,
             pb: 4,
-            px: 2,
           }}
         >
           {(sessionsError || statsError) && (
@@ -408,6 +419,13 @@ export default function Home() {
                   value={stats?.music ?? null}
                   color="#eab308"
                   isLoading={statsLoading}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <SystemResources
+                  resources={resources}
+                  isLoading={resourcesLoading}
+                  error={resourcesError}
                 />
               </Grid>
             </Grid>

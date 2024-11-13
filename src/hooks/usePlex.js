@@ -41,7 +41,7 @@ export function usePlexSessions() {
       refreshInterval: 30000,
       shouldRetryOnError: false,
       revalidateOnFocus: true,
-    }
+    },
   );
 
   return {
@@ -68,7 +68,7 @@ export function usePlexStats() {
       refreshInterval: 300000,
       shouldRetryOnError: false,
       revalidateOnFocus: true,
-    }
+    },
   );
 
   return {
@@ -79,6 +79,59 @@ export function usePlexStats() {
       typeof window !== 'undefined' &&
       !!getStorageItem('plexData', null),
     error,
+    mutate,
+  };
+}
+
+export function usePlexResources() {
+  const shouldFetch =
+    typeof window !== 'undefined' && !!localStorage.getItem('plexData');
+
+  const { data, error, mutate } = useSWR(
+    shouldFetch ? '/api/plex/resources' : null,
+    async (url) => {
+      try {
+        const plexData = JSON.parse(localStorage.getItem('plexData') || '{}');
+        if (!plexData.token || !plexData.serverUrl) {
+          throw new Error('Missing Plex credentials');
+        }
+
+        const response = await fetch(url, {
+          headers: {
+            'X-Plex-Token': plexData.token,
+            'X-Plex-Server-URL': plexData.serverUrl,
+            Accept: 'application/json',
+          },
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(
+            errorData.error || `HTTP error! status: ${response.status}`,
+          );
+        }
+
+        return response.json();
+      } catch (error) {
+        console.error('Resource fetch error:', error);
+        throw error;
+      }
+    },
+    {
+      refreshInterval: 2000,
+      revalidateOnFocus: true,
+      shouldRetryOnError: false,
+      onErrorRetry: (error, key, config, revalidate, { retryCount }) => {
+        if (retryCount >= 3) return;
+        setTimeout(() => revalidate({ retryCount }), 5000);
+      },
+    },
+  );
+
+  return {
+    resources: data,
+    isLoading: shouldFetch && !error && !data,
+    error: error,
     mutate,
   };
 }
