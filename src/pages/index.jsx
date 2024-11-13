@@ -115,8 +115,9 @@ export default function Home() {
         .map((server) => ({
           name: server.name,
           connection:
-            server.connections.find((conn) => conn.remote) ||
-            server.connections[0],
+            server.connections.find(
+              (conn) => conn.remote && !conn.address.includes('172'),
+            ) || server.connections[0],
         }));
 
       console.log('Processed servers:', servers); // Debug log
