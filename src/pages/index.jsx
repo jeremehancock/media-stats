@@ -115,8 +115,9 @@ export default function Home() {
         .map((server) => ({
           name: server.name,
           connection:
-            server.connections.find((conn) => !conn.local) ||
-            server.connections[0],
+            server.connections.find(
+              (conn) => conn.local && !conn.address.includes('172'),
+            ) || server.connections[0],
         }));
 
       console.log('Processed servers:', servers); // Debug log
@@ -247,7 +248,7 @@ export default function Home() {
           <AppBar position="static" elevation={1}>
             <Toolbar>
               <Typography variant="h6" component="h1" sx={{ flexGrow: 1 }}>
-                Plex Stats
+                Media Stats
               </Typography>
               <IconButton onClick={handleThemeToggle} color="inherit">
                 {isDark ? <Brightness7 /> : <Brightness4 />}
@@ -258,10 +259,10 @@ export default function Home() {
           <Container maxWidth="sm" sx={{ pt: 8 }}>
             <Paper elevation={3} sx={{ p: 4, textAlign: 'center' }}>
               <Typography variant="h4" gutterBottom>
-                Welcome to Plex Stats
+                Welcome to Media Stats
               </Typography>
               <Typography color="text.secondary" sx={{ mb: 4 }}>
-                Connect your Plex account to view your media statistics
+                Connect your Plex account to view your media statistics.
               </Typography>
               {authError && (
                 <Alert severity="error" sx={{ mb: 3 }}>
@@ -316,7 +317,7 @@ export default function Home() {
         >
           <Toolbar>
             <Typography variant="h6" component="h1" sx={{ flexGrow: 1 }}>
-              Plex Stats
+              Media Stats
             </Typography>
             <IconButton onClick={handleThemeToggle} color="inherit">
               {isDark ? <Brightness7 /> : <Brightness4 />}
@@ -344,7 +345,7 @@ export default function Home() {
               )}
               {statsError && (
                 <Alert severity="error" sx={{ mb: 2 }}>
-                  Failed to fetch Plex stats: {statsError.message}
+                  Failed to fetch Media stats: {statsError.message}
                 </Alert>
               )}
             </Container>
