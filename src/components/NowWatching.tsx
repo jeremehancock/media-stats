@@ -78,7 +78,14 @@ export const NowWatching: React.FC<NowWatchingProps> = ({
         {sessions.map((session) => (
           <Grid item xs={12} md={6} key={session.id}>
             <Paper variant="outlined" sx={{ p: 2 }}>
-              <Box display="flex" gap={2}>
+              <Box
+                display="flex"
+                gap={2}
+                sx={{
+                  flexDirection: { xs: 'column', sm: 'row' },
+                  alignItems: { xs: 'center', sm: 'flex-start' },
+                }}
+              >
                 <Box flexShrink={0}>
                   <img
                     src={
@@ -95,8 +102,13 @@ export const NowWatching: React.FC<NowWatchingProps> = ({
                     }}
                   />
                 </Box>
-                <Box flex={1} minWidth={0}>
-                  <Box display="flex" alignItems="center" gap={1}>
+                <Box flex={1} minWidth={0} textAlign="left">
+                  <Box
+                    display="flex"
+                    alignItems="center"
+                    gap={1}
+                    justifyContent="flex-start"
+                  >
                     <PlayArrow fontSize="small" color="success" />
                     <Typography variant="body2" color="text.secondary" noWrap>
                       {session.user}
