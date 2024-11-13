@@ -34,7 +34,7 @@ export const ServerSelectDialog = ({
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
-      <DialogTitle>Select Plex Server</DialogTitle>
+      <DialogTitle>Select Connection</DialogTitle>
       <DialogContent>
         {servers.length === 0 ? (
           <Typography color="text.secondary" sx={{ p: 2 }}>
