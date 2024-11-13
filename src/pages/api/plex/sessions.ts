@@ -64,7 +64,7 @@ export default async function handler(
           type: session.type,
           progress: Math.floor(session.viewOffset / 1000 / 60),
           duration: Math.floor(session.duration / 1000 / 60),
-          thumbnail: `${serverUrl}${session.thumb}?X-Plex-Token=${token}`,
+          thumbnail: session.thumb,
           grandparentThumbNail: session.grandparentThumb,
           live: session.live,
           episode:

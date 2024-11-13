@@ -1,3 +1,4 @@
+// components/NowWatching.tsx
 import React from 'react';
 import {
   Paper,
@@ -25,6 +26,21 @@ type NowWatchingProps = {
   sessions: Session[];
   isLoading: boolean;
   error?: { message: string };
+};
+
+const getThumbnailUrl = (
+  path: string | undefined,
+  token: string,
+  serverUrl: string,
+) => {
+  if (!path || path.includes('undefined')) return null;
+
+  const params = new URLSearchParams({
+    path,
+    token,
+    serverUrl,
+  });
+  return `/api/plex/thumbnail?${params.toString()}`;
 };
 
 export const NowWatching: React.FC<NowWatchingProps> = ({
@@ -69,79 +85,138 @@ export const NowWatching: React.FC<NowWatchingProps> = ({
     );
   }
 
+  // Get Plex data for thumbnail proxy
+  let plexData;
+  try {
+    plexData = JSON.parse(localStorage.getItem('plexData') || '{}');
+  } catch (e) {
+    console.error('Error parsing plexData:', e);
+    plexData = {};
+  }
+
   return (
     <Paper elevation={2} sx={{ p: 3 }}>
       <Typography variant="h6" gutterBottom>
         Now Watching
       </Typography>
       <Grid container spacing={2}>
-        {sessions.map((session) => (
-          <Grid item xs={12} md={6} key={session.id}>
-            <Paper variant="outlined" sx={{ p: 2, pb: 0.8 }}>
-              <Box
-                display="flex"
-                gap={2}
+        {sessions.map((session) => {
+          // Get proxied thumbnail URL if Plex data is available
+          const thumbnailUrl =
+            plexData.token &&
+            plexData.serverUrl &&
+            getThumbnailUrl(
+              session.thumbnail,
+              plexData.token,
+              plexData.serverUrl,
+            );
+
+          return (
+            <Grid item xs={12} md={6} key={session.id}>
+              <Paper
+                variant="outlined"
                 sx={{
-                  flexDirection: { xs: 'column', sm: 'row' },
-                  alignItems: { xs: 'center', sm: 'flex-start' },
+                  p: 2,
+                  pb: 0.8,
+                  transition: 'all 0.2s ease-in-out',
+                  '&:hover': {
+                    transform: 'translateY(-2px)',
+                    boxShadow: (theme) => theme.shadows[4],
+                  },
                 }}
               >
-                <Box flexShrink={0}>
-                  <img
-                    src={
-                      !session.thumbnail?.includes('undefined')
-                        ? session.thumbnail
-                        : session.grandparentThumbNail
-                    }
-                    alt={session.title}
-                    style={{
+                <Box
+                  display="flex"
+                  gap={2}
+                  sx={{
+                    flexDirection: { xs: 'column', sm: 'row' },
+                    alignItems: { xs: 'center', sm: 'flex-start' },
+                  }}
+                >
+                  <Box
+                    flexShrink={0}
+                    sx={{
                       width: 160,
                       height: 200,
-                      objectFit: 'cover',
-                      borderRadius: 4,
+                      borderRadius: 1,
+                      overflow: 'hidden',
+                      bgcolor: 'action.hover',
+                      position: 'relative',
                     }}
-                  />
-                </Box>
-                <Box flex={1} minWidth={0} textAlign="left">
-                  <Box
-                    display="flex"
-                    alignItems="center"
-                    gap={1}
-                    justifyContent="flex-start"
                   >
-                    <PlayArrow fontSize="small" color="success" />
-                    <Typography variant="body2" color="text.secondary" noWrap>
-                      {session.user}
-                    </Typography>
+                    <img
+                      src={
+                        thumbnailUrl
+                          ? thumbnailUrl
+                          : session.grandparentThumbNail
+                      }
+                      alt={session.title}
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover',
+                        borderRadius: 4,
+                      }}
+                      loading="lazy"
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.style.display = 'none';
+                      }}
+                    />
                   </Box>
-                  <Typography variant="subtitle1" fontWeight="bold" noWrap>
-                    {session.title}
-                  </Typography>
-                  {session.episode && (
-                    <Typography variant="body2" color="text.secondary" noWrap>
-                      {session.episode}
-                    </Typography>
-                  )}
-                  {!session.live ? (
-                    <Box sx={{ mt: 2 }}>
-                      <LinearProgress
-                        variant="determinate"
-                        value={(session.progress / session.duration) * 100}
-                        sx={{ mb: 1 }}
+                  <Box flex={1} minWidth={0} textAlign="left">
+                    <Box
+                      display="flex"
+                      alignItems="center"
+                      gap={1}
+                      justifyContent="flex-start"
+                    >
+                      <PlayArrow
+                        fontSize="small"
+                        color="success"
+                        sx={{ animation: 'pulse 2s infinite' }}
                       />
-                      <Typography variant="caption" color="text.secondary">
-                        {Math.round(session.progress)}min / {session.duration}
-                        min
+                      <Typography variant="body2" color="text.secondary" noWrap>
+                        {session.user}
                       </Typography>
                     </Box>
-                  ) : (
-                    <Typography mt={1}>Live TV</Typography>
-                  )}
+                    <Typography variant="subtitle1" fontWeight="bold" noWrap>
+                      {session.title}
+                    </Typography>
+                    {session.episode && (
+                      <Typography variant="body2" color="text.secondary" noWrap>
+                        {session.episode}
+                      </Typography>
+                    )}
+                    {!session.live ? (
+                      <Box sx={{ mt: 2 }}>
+                        <LinearProgress
+                          variant="determinate"
+                          value={(session.progress / session.duration) * 100}
+                          sx={{
+                            mb: 1,
+                            height: 4,
+                            borderRadius: 2,
+                            bgcolor: 'rgba(0,0,0,0.1)',
+                            '.MuiLinearProgress-bar': {
+                              borderRadius: 2,
+                            },
+                          }}
+                        />
+                        <Typography variant="caption" color="text.secondary">
+                          {Math.round(session.progress)}min / {session.duration}
+                          min
+                        </Typography>
+                      </Box>
+                    ) : (
+                      <Typography mt={1}>Live TV</Typography>
+                    )}
+                  </Box>
                 </Box>
-              </Box>
-            </Paper>
-          </Grid>
-        ))}
+              </Paper>
+            </Grid>
+          );
+        })}
       </Grid>
     </Paper>
   );
