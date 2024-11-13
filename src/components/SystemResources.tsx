@@ -99,10 +99,6 @@ export const SystemResources: React.FC<ResourcesProps> = ({
               display: 'flex',
               flexDirection: 'column',
               height: '100%',
-              '&:hover': {
-                transform: 'translateY(-2px)',
-                boxShadow: (theme) => theme.shadows[4],
-              },
             }}
           >
             <Box display="flex" alignItems="center" gap={1} mb={1}>
@@ -126,10 +122,6 @@ export const SystemResources: React.FC<ResourcesProps> = ({
               display: 'flex',
               flexDirection: 'column',
               height: '100%',
-              '&:hover': {
-                transform: 'translateY(-2px)',
-                boxShadow: (theme) => theme.shadows[4],
-              },
             }}
           >
             <Box display="flex" alignItems="center" gap={1} mb={1}>
@@ -153,10 +145,6 @@ export const SystemResources: React.FC<ResourcesProps> = ({
               display: 'flex',
               flexDirection: 'column',
               height: '100%',
-              '&:hover': {
-                transform: 'translateY(-2px)',
-                boxShadow: (theme) => theme.shadows[4],
-              },
             }}
           >
             <Box display="flex" alignItems="center" gap={1} mb={1}>
