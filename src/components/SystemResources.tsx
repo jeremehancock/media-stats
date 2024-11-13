@@ -5,7 +5,7 @@ import {
   Grid,
   Box,
   Alert,
-  CircularProgress,
+  LinearProgress,
 } from '@mui/material';
 import { NetworkCheck, Stream, Transform } from '@mui/icons-material';
 
@@ -64,7 +64,7 @@ export const SystemResources: React.FC<ResourcesProps> = ({
           Session Resources
         </Typography>
         <Box display="flex" justifyContent="center" p={4}>
-          <CircularProgress />
+          <LinearProgress sx={{ width: '50%' }} />
         </Box>
       </Paper>
     );
