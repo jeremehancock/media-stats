@@ -15,11 +15,11 @@ Create docker-compose.yml:
 ```
 services:
   nextjs:
-    image: bozodev//media-stats:latest
+    image: bozodev/media-stats:latest
     ports:
       - "3778:3778"
 
-    container_name: /media-stats
+    container_name: media-stats
     restart: unless-stopped
 ```
 
