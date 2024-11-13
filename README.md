@@ -1,7 +1,10 @@
 # MediaStats
 
-Simple Plex Media Stats
+## Simple Plex Media Stats
 
+![Default Mode Screenshot](public/screenshots/media-stats-default.png)
+
+![Dark Mode Screenshot](public/screenshots/media-stats-dark.png)
 ### Docker Run
 
 `docker pull bozodev/mediastats:latest`
