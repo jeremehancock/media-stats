@@ -117,26 +117,21 @@ export const NowWatching: React.FC<NowWatchingProps> = ({
                 sx={{
                   p: 2,
                   pb: 0.8,
-                  transition: 'all 0.2s ease-in-out',
-                  '&:hover': {
-                    transform: 'translateY(-2px)',
-                    boxShadow: (theme) => theme.shadows[4],
-                  },
                 }}
               >
                 <Box
                   display="flex"
                   gap={2}
                   sx={{
-                    flexDirection: { xs: 'column', sm: 'row' },
-                    alignItems: { xs: 'center', sm: 'flex-start' },
+                    flexDirection: { xs: 'row', sm: 'row' },
+                    alignItems: 'flex-start',
                   }}
                 >
                   <Box
                     flexShrink={0}
                     sx={{
-                      width: 160,
-                      height: 200,
+                      width: { xs: 80, sm: 160 },
+                      height: { xs: 100, sm: 200 },
                       borderRadius: 1,
                       overflow: 'hidden',
                       bgcolor: 'action.hover',
