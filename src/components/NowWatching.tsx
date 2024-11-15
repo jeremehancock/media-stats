@@ -163,7 +163,7 @@ export const NowWatching: React.FC<NowWatchingProps> = ({
                       }}
                     />
                   </Box>
-                  <Box flex={1} minWidth={0} textAlign="left">
+                  <Box flex={1} minWidth={0} textAlign="left" width="100%">
                     <Box
                       display="flex"
                       alignItems="center"
