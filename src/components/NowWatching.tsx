@@ -116,7 +116,6 @@ export const NowWatching: React.FC<NowWatchingProps> = ({
                 variant="outlined"
                 sx={{
                   p: 2,
-                  pb: 0.8,
                 }}
               >
                 <Box
