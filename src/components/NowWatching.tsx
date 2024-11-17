@@ -129,8 +129,8 @@ export const NowWatching: React.FC<NowWatchingProps> = ({
                   <Box
                     flexShrink={0}
                     sx={{
-                      width: { xs: 80, sm: 160 },
-                      height: { xs: 100, sm: 200 },
+                      width: { xs: 85, sm: 170 },
+                      height: { xs: 120, sm: 250 },
                       borderRadius: 1,
                       overflow: 'hidden',
                       bgcolor: 'action.hover',
