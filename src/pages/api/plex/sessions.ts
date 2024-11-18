@@ -12,6 +12,12 @@ type SessionData = {
   grandparentThumbNail: string;
   live?: number;
   episode?: string;
+  transcoding: {
+    isTranscoding: boolean;
+    videoDecision?: string;
+    audioDecision?: string;
+    container?: string;
+  };
 };
 
 export default async function handler(
@@ -54,24 +60,50 @@ export default async function handler(
           live: number;
           parentIndex: number;
           index: number;
-        }): SessionData => ({
-          id: session.ratingKey,
-          user: session.User?.title || 'Unknown User',
-          title:
-            session.type === 'episode'
-              ? session.grandparentTitle
-              : session.title,
-          type: session.type,
-          progress: Math.floor(session.viewOffset / 1000 / 60),
-          duration: Math.floor(session.duration / 1000 / 60),
-          thumbnail: session.thumb,
-          grandparentThumbNail: session.grandparentThumb,
-          live: session.live,
-          episode:
-            session.type === 'episode'
-              ? `S${session.parentIndex}E${session.index} - ${session.title}`
-              : undefined,
-        }),
+          Media: Array<{
+            Part: Array<{
+              Decision?: string;
+              Stream?: Array<{
+                streamType: number;
+                decision?: string;
+              }>;
+            }>;
+            Container?: string;
+          }>;
+        }): SessionData => {
+          const media = session.Media?.[0];
+          const part = media?.Part?.[0];
+          const videoStream = part?.Stream?.find((s) => s.streamType === 1);
+          const audioStream = part?.Stream?.find((s) => s.streamType === 2);
+
+          return {
+            id: session.ratingKey,
+            user: session.User?.title || 'Unknown User',
+            title:
+              session.type === 'episode'
+                ? session.grandparentTitle
+                : session.title,
+            type: session.type,
+            progress: Math.floor(session.viewOffset / 1000 / 60),
+            duration: Math.floor(session.duration / 1000 / 60),
+            thumbnail: session.thumb,
+            grandparentThumbNail: session.grandparentThumb,
+            live: session.live,
+            episode:
+              session.type === 'episode'
+                ? `S${session.parentIndex}E${session.index} - ${session.title}`
+                : undefined,
+            transcoding: {
+              isTranscoding:
+                part?.Decision === 'transcode' ||
+                videoStream?.decision === 'transcode' ||
+                audioStream?.decision === 'transcode',
+              videoDecision: videoStream?.decision,
+              audioDecision: audioStream?.decision,
+              container: media?.Container,
+            },
+          };
+        },
       ) || [];
 
     res.json(sessions);

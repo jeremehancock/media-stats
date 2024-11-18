@@ -6,8 +6,9 @@ import {
   Box,
   LinearProgress,
   Alert,
+  Tooltip,
 } from '@mui/material';
-import { PlayArrow } from '@mui/icons-material';
+import { PlayArrow, Transform } from '@mui/icons-material';
 
 type Session = {
   id: string;
@@ -19,6 +20,12 @@ type Session = {
   episode?: string;
   progress: number;
   duration: number;
+  transcoding?: {
+    isTranscoding: boolean;
+    videoDecision?: string;
+    audioDecision?: string;
+    container?: string;
+  };
 };
 
 type NowWatchingProps = {
@@ -100,7 +107,6 @@ export const NowWatching: React.FC<NowWatchingProps> = ({
       </Typography>
       <Grid container spacing={2}>
         {sessions.map((session) => {
-          // Get proxied thumbnail URL if Plex data is available
           const thumbnailUrl =
             plexData.token &&
             plexData.serverUrl &&
@@ -116,6 +122,7 @@ export const NowWatching: React.FC<NowWatchingProps> = ({
                 variant="outlined"
                 sx={{
                   p: 2,
+                  position: 'relative',
                 }}
               >
                 <Box
@@ -206,6 +213,19 @@ export const NowWatching: React.FC<NowWatchingProps> = ({
                     )}
                   </Box>
                 </Box>
+                {session.transcoding?.isTranscoding && (
+                  <Tooltip title="Transcoding">
+                    <Transform
+                      sx={{
+                        position: 'absolute',
+                        bottom: 8,
+                        right: 8,
+                        color: 'warning.main',
+                        fontSize: 20,
+                      }}
+                    />
+                  </Tooltip>
+                )}
               </Paper>
             </Grid>
           );
