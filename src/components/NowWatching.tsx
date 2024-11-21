@@ -111,9 +111,7 @@ export const NowWatching: React.FC<NowWatchingProps> = ({
             plexData.token &&
             plexData.serverUrl &&
             getThumbnailUrl(
-              session.episode && !session.live
-                ? session.grandparentThumbNail
-                : session.thumbnail,
+              session.thumbnail,
               plexData.token,
               plexData.serverUrl,
             );
@@ -185,11 +183,9 @@ export const NowWatching: React.FC<NowWatchingProps> = ({
                     <Typography variant="subtitle1" fontWeight="bold" noWrap>
                       {session.title}
                     </Typography>
-                    {session.episode && (
-                      <Typography variant="body2" color="text.secondary" noWrap>
-                        {session.episode}
-                      </Typography>
-                    )}
+                    <Typography variant="body2" color="text.secondary" noWrap>
+                      {session.episode ? session.episode : 'Movie'}
+                    </Typography>
                     {!session.live ? (
                       <Box sx={{ mt: 2 }}>
                         <LinearProgress

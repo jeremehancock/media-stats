@@ -49,6 +49,7 @@ export default async function handler(
       response.data.MediaContainer.Metadata?.map(
         (session: {
           grandparentTitle: string;
+          parentTitle: string;
           ratingKey: string;
           User: { title: string };
           title: string;
@@ -86,12 +87,15 @@ export default async function handler(
             type: session.type,
             progress: Math.floor(session.viewOffset / 1000 / 60),
             duration: Math.floor(session.duration / 1000 / 60),
-            thumbnail: session.thumb,
+            thumbnail:
+              session.type === 'episode' && !session.live
+                ? session.grandparentThumb
+                : session.thumb,
             grandparentThumbNail: session.grandparentThumb,
             live: session.live,
             episode:
               session.type === 'episode'
-                ? `S${session.parentIndex}E${session.index} - ${session.title}`
+                ? `S${session.parentIndex}-E${session.index} - ${session.title}`
                 : undefined,
             transcoding: {
               isTranscoding:
