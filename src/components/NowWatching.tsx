@@ -111,7 +111,9 @@ export const NowWatching: React.FC<NowWatchingProps> = ({
             plexData.token &&
             plexData.serverUrl &&
             getThumbnailUrl(
-              session.thumbnail,
+              session.episode && !session.live
+                ? session.grandparentThumbNail
+                : session.thumbnail,
               plexData.token,
               plexData.serverUrl,
             );
