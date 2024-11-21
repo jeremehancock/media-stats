@@ -58,7 +58,7 @@ export const NowWatching: React.FC<NowWatchingProps> = ({
     return (
       <Paper elevation={2} sx={{ p: 3 }}>
         <Typography variant="h6" gutterBottom>
-          Now Streaming
+          Currently Streaming
         </Typography>
         <Alert severity="error">
           Failed to load active sessions: {error.message}
@@ -71,7 +71,7 @@ export const NowWatching: React.FC<NowWatchingProps> = ({
     return (
       <Paper elevation={2} sx={{ p: 3 }}>
         <Typography variant="h6" gutterBottom>
-          Now Streaming
+          Currently Streaming
         </Typography>
         <Box display="flex" justifyContent="center" p={4}>
           <LinearProgress sx={{ width: '50%' }} />
@@ -84,7 +84,7 @@ export const NowWatching: React.FC<NowWatchingProps> = ({
     return (
       <Paper elevation={2} sx={{ p: 3 }}>
         <Typography variant="h6" gutterBottom>
-          Now Streaming
+          Currently Streaming
         </Typography>
         <Typography color="text.secondary">No active sessions</Typography>
       </Paper>
@@ -103,7 +103,7 @@ export const NowWatching: React.FC<NowWatchingProps> = ({
   return (
     <Paper elevation={2} sx={{ p: 3 }}>
       <Typography variant="h6" gutterBottom>
-        Now Streaming
+        Currently Streaming
       </Typography>
       <Grid container spacing={2}>
         {sessions.map((session) => {
