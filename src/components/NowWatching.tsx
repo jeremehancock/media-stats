@@ -195,7 +195,7 @@ export const NowWatching: React.FC<NowWatchingProps> = ({
                             mb: 1,
                             height: 4,
                             borderRadius: 2,
-                            bgcolor: 'rgba(0,0,0,0.1)',
+                            bgcolor: 'text.secondary',
                             '.MuiLinearProgress-bar': {
                               borderRadius: 2,
                             },
