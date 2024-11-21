@@ -67,15 +67,68 @@ export default async function handler(
               Stream?: Array<{
                 streamType: number;
                 decision?: string;
+                context?: string;
+                protocol?: string;
+                addressing?: string;
+                location?: string;
               }>;
             }>;
             Container?: string;
+            selected?: boolean;
+            protocol?: string;
           }>;
+          Session?: {
+            id: string;
+            bandwidth?: number;
+          };
+          TranscodeSession?: {
+            key: string;
+            throttled: boolean;
+            complete: boolean;
+            progress: number;
+            size: number;
+            speed: number;
+            error: boolean;
+            duration: number;
+            context: string;
+            sourceVideoCodec: string;
+            sourceAudioCodec: string;
+            videoDecision: string;
+            audioDecision: string;
+            protocol: string;
+            container: string;
+          };
         }): SessionData => {
           const media = session.Media?.[0];
           const part = media?.Part?.[0];
           const videoStream = part?.Stream?.find((s) => s.streamType === 1);
           const audioStream = part?.Stream?.find((s) => s.streamType === 2);
+
+          // Standard transcoding checks
+          let isTranscoding: boolean = Boolean(
+            part?.Decision === 'transcode' ||
+              videoStream?.decision === 'transcode' ||
+              audioStream?.decision === 'transcode',
+          );
+
+          // Special handling for Live TV
+          if (session.live) {
+            isTranscoding = Boolean(
+              isTranscoding ||
+                session.TranscodeSession || // Presence of TranscodeSession usually indicates transcoding
+                media?.protocol === 'dash' || // DASH protocol often indicates transcoding
+                videoStream?.protocol === 'dash' ||
+                videoStream?.context === 'streaming' || // Check for streaming context
+                videoStream?.location === 'transcode' || // Check for transcode location
+                part?.Stream?.some(
+                  (stream) =>
+                    stream.protocol === 'dash' ||
+                    stream.context === 'streaming' ||
+                    stream.location === 'transcode' ||
+                    stream.addressing === 'internal', // Internal addressing often indicates transcoding for live TV
+                ),
+            );
+          }
 
           return {
             id: session.ratingKey,
@@ -98,13 +151,15 @@ export default async function handler(
                 ? `S${session.parentIndex}-E${session.index} - ${session.title}`
                 : undefined,
             transcoding: {
-              isTranscoding:
-                part?.Decision === 'transcode' ||
-                videoStream?.decision === 'transcode' ||
-                audioStream?.decision === 'transcode',
-              videoDecision: videoStream?.decision,
-              audioDecision: audioStream?.decision,
-              container: media?.Container,
+              isTranscoding,
+              videoDecision:
+                session.TranscodeSession?.videoDecision ||
+                videoStream?.decision,
+              audioDecision:
+                session.TranscodeSession?.audioDecision ||
+                audioStream?.decision,
+              container:
+                session.TranscodeSession?.container || media?.Container,
             },
           };
         },
