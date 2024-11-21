@@ -86,7 +86,7 @@ export const NowWatching: React.FC<NowWatchingProps> = ({
         <Typography variant="h6" gutterBottom>
           Currently Streaming
         </Typography>
-        <Typography color="text.secondary">No active sessions</Typography>
+        <Typography color="text.secondary">No active streams</Typography>
       </Paper>
     );
   }
