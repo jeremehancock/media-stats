@@ -29,3 +29,15 @@ services:
 `docker-compose pull`
 
 `docker-compose up -d`
+
+## AI Assistance Disclosure
+
+This tool was developed with assistance from AI language models.
+
+## Disclaimer
+
+All code is provided as-is without any warranty.
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
