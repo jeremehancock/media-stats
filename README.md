@@ -42,6 +42,11 @@ docker-compose up -d
 ```
 
 
+It is recommended to run this on the same server where your Plex Media Server is installed. That way you can use `http://SERVER-NAME-OR-IP:3778` to access MediaStats on your local network.
+
+If you want to run this on another machine you could use somethink like [Tailscale](https://tailscale.com/) to ensure both your server running Plex Media Server and the machine running MediaStats can communicate on your local network.
+
+
 ## License
 
 [MIT License](LICENSE)
