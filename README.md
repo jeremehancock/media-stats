@@ -5,17 +5,24 @@
 ![Default Mode Screenshot](public/screenshots/media-stats-default.png)
 
 ![Dark Mode Screenshot](public/screenshots/media-stats-dark.png)
+
 ### Docker Run
 
-`docker pull bozodev/mediastats:latest`
+```bash
+docker pull bozodev/mediastats:latest
+```
 
-`docker run -d --name=mediastats -p 3778:3778 --restart unless-stopped bozodev/mediastats:latest`
+
+```bash
+docker run -d --name=mediastats -p 3778:3778 --restart unless-stopped bozodev/mediastats:latest
+```
+
 
 ### Docker Compose
 
 Create docker-compose.yml:
 
-```
+```bash
 services:
   nextjs:
     image: bozodev/mediastats:latest
@@ -26,18 +33,19 @@ services:
     restart: unless-stopped
 ```
 
-`docker-compose pull`
+```bash
+docker-compose pull
+```
 
-`docker-compose up -d`
+```bash
+docker-compose up -d
+```
+
+
+## License
+
+[MIT License](LICENSE)
 
 ## AI Assistance Disclosure
 
 This tool was developed with assistance from AI language models.
-
-## Disclaimer
-
-All code is provided as-is without any warranty.
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
