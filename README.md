@@ -6,6 +6,10 @@
 
 ![Dark Mode Screenshot](public/screenshots/media-stats-dark.png)
 
+### If you find this tool useful, consider helping me buy more hard drives!
+
+[![](https://jereme.dev/images/paypal-donate-button.png)](https://www.paypal.com/ncp/payment/7WSTDKQ4PCNXQ)
+
 ### Docker Run
 
 ```bash
