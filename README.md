@@ -6,9 +6,9 @@
 
 ![Dark Mode Screenshot](public/screenshots/media-stats-dark.png)
 
-### If you find this tool useful, consider helping me buy more hard drives!
+## Support this project
 
-[![](https://jereme.dev/images/paypal-donate-button.png)](https://www.paypal.com/ncp/payment/7WSTDKQ4PCNXQ)
+[![Donate](https://raw.githubusercontent.com/jeremehancock/Posteria/main/images/donate-button.png)](https://www.buymeacoffee.com/jereme)
 
 ### Docker Run
 
